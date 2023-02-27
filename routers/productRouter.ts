@@ -15,3 +15,5 @@ productRouter.get('/:id', getProduct);
 productRouter.post('/new', isAuth, isAdmin, createProduct);
 productRouter.put('/:id', isAuth, isAdmin, updateProduct);
 productRouter.put('/:id', isAuth, isAdmin, deleteProduct);
+
+export default productRouter;
