@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -8,8 +8,8 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
@@ -25,6 +25,6 @@
     "outDir": "./dist",
     "rootDir": "./"
   },
-  "include": ["next-env.d.ts", "**/*.ts", ".next/types/**/*.ts", "src/**/*"],
+  "include": ["**/*.ts", "src/**/*"],
   "exclude": ["node_modules"]
 }

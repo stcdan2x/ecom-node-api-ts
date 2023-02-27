@@ -10,7 +10,7 @@ module.exports = {
   ignorePatterns: ['gql/**/types'],
   overrides: [
     {
-      files: ['**/*.ts', '**/*.tsx'],
+      files: ['**/*.ts'],
       extends: ['airbnb-typescript'],
       parserOptions: {
         project: './tsconfig.json',
