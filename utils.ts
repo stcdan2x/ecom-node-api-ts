@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
+import { ObjectId } from 'mongoose';
 import config from './config.js';
 
 export const generateToken = (user: {
-  _id: string;
+  _id: any;
   name: string;
   email: string;
   isAdmin: boolean;
