@@ -1,3 +1,4 @@
+import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongoose';
 import config from './config.js';
@@ -18,19 +19,7 @@ export const generateToken = (user: {
     config.JWT_SECRET!
   );
 };
-export const isAuth = (
-  req: { headers: { authorization: any }; user: any },
-  res: {
-    status: (
-      arg0: number
-    ) => {
-      (): any;
-      new (): any;
-      send: { (arg0: { message: string }): void; new (): any };
-    };
-  },
-  next: () => void
-) => {
+export const isAuth = (req: any, res: Response, next: NextFunction) => {
   const bearerToken = req.headers.authorization;
   if (!bearerToken) {
     res.status(401).send({ message: 'Token is not supplied' });
@@ -46,19 +35,7 @@ export const isAuth = (
     });
   }
 };
-export const isAdmin = (
-  req: { user: { isAdmin: any } },
-  res: {
-    status: (
-      arg0: number
-    ) => {
-      (): any;
-      new (): any;
-      send: { (arg0: { message: string }): void; new (): any };
-    };
-  },
-  next: () => void
-) => {
+export const isAdmin = (req: any, res: Response, next: NextFunction) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
