@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
 import config from './config.js';
+import userRouter from './routers/userRouter.js';
 
 const app = express();
 
@@ -18,6 +19,8 @@ mongoose
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use('/api/users', userRouter);
+app.use('/api/products', userRouter);
 app.use('/uploads', express.static(path.join(__dirname, '/../uploads')));
 
 app.get('/', (req, res) => {

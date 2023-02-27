@@ -1,10 +1,10 @@
+import { Request, Response } from 'express';
+import asyncHandler from 'express-async-handler';
 import User from '@/models/userModel.js';
 import { generateToken } from '@/utils.js';
-import asyncHandler from 'express-async-handler';
-import { Request, Response } from 'express';
 
 // create admin account for testing, DO NOT DEPLOY to production
-export const createAdmin = asyncHandler(async (req, res) => {
+export const createAdmin = asyncHandler(async (req: Request, res: Response) => {
   try {
     const user = new User({
       name: 'admin',
@@ -20,7 +20,7 @@ export const createAdmin = asyncHandler(async (req, res) => {
 });
 
 // create a user account
-export const createUser = asyncHandler(async (req, res) => {
+export const createUser = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
   const userExists = await User.findOne({ email });
@@ -51,7 +51,7 @@ export const createUser = asyncHandler(async (req, res) => {
 });
 
 // login to user account
-export const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email, password });
@@ -73,32 +73,36 @@ export const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-export const updateProfile = asyncHandler(async (req: Request |any, res: Response) => {
-  const user = await User.findById(req.user._id);
+// update currently logged in user account
+export const updateProfile = asyncHandler(
+  async (req: Request | any, res: Response) => {
+    const user = await User.findById(req.user._id);
 
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = req.body.password;
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+
+      const updatedUser: any = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser._id),
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
     }
-
-    const updatedUser: any = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
-    });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
   }
-});
+);
 
-export const updateUser = asyncHandler(async (req, res) => {
+// update existing user account using a logged in admin account
+export const updateUser = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
@@ -123,4 +127,15 @@ export const updateUser = asyncHandler(async (req, res) => {
       message: 'User Not Found',
     });
   }
+});
+
+export const deleteUser = asyncHandler( async (req, res) => {
+   const user = await User.findById(req.params.id);
+   if (user) {
+      await user.remove();
+      res.json({ message: "User removed." })
+   } else {
+      res.status(404);
+      throw new Error("User not found")
+   }
 });

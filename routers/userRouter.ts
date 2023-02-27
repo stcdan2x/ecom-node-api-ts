@@ -1,6 +1,7 @@
 import {
   createAdmin,
   createUser,
+  deleteUser,
   loginUser,
   updateProfile,
   updateUser,
@@ -16,3 +17,6 @@ userRouter.post('/register', createUser);
 userRouter.post('/login', loginUser);
 userRouter.put('/profile', isAuth, updateProfile);
 userRouter.put('/:id', isAuth, isAdmin, updateUser);
+userRouter.delete('/:id', isAuth, isAdmin, deleteUser);
+
+export default userRouter;
